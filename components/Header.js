@@ -5,8 +5,22 @@ import {
     MenuIcon,
     UserCircleIcon,
     UsersIcon } from '@heroicons/react/solid'
+import { useState } from "react"
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { DateRangePicker } from "react-date-range";
 
 function Header() {
+    const [searchInput, setSearchIput] = useState("");
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    
+    const selectionRange = {
+        startDate: startDate,
+        endDate: endDate,
+        key: 'Selection'
+    };
+
     return (
         <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
             {/* Left */}
@@ -21,8 +35,11 @@ function Header() {
 
             {/* Middle - Search */}
             <div className="flex items-center md:border-2 rounded-full py-2 md:shadow-sm">
-                <input type="text" className="flex-grow pl-5 bg-transparent outline-none placeholder-grey-400"
-                       placeholder="Start your search" />
+                <input 
+                    value={searchInput}
+                    onChange={(e) => setSearchIput(e.target.value)}
+                    type="text" className="flex-grow pl-5 bg-transparent outline-none placeholder-grey-400"
+                    placeholder="Start your search" />
                 <SearchIcon className="hidden md:inline-flex h-8
                                      bg-red-400 text-white rounded-full p-2 cursor-pointer
                                      md:mx-2"  />
@@ -39,6 +56,11 @@ function Header() {
                 </div>
             </div>            
 
+            {searchInput && (
+                <div>
+                    <DateRangePicker ranges={[selectionRange]} />
+                </div>
+            )}
         </header>
     )
 }
